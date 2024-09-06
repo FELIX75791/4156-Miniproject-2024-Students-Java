@@ -1,0 +1,26 @@
+In Course.java:
+1. enrolledStudentCount was initialized with wrong non-zero value. Initial value should be 0.
+2. enrollStudent() method was implemented incorrectly. It was not checking whether the course is full or not and directly increase the enrolledStudentCount with a always false return value.
+3. dropStudent() method was implemented incorrectly. It was not checking whether the course has any student or not and directly decrease the enrolledStudentCount with a always false return value.
+4. getCourseLocation() wrongly returned instructorName.
+5. getInstructorName() wrongly returned courseLocation.
+6. isCourseFull() method evaluate the wrong condition. Only when the enrollmentCapacity <= enrolledStudentCount should the course be considered as full.
+
+In Department.java:
+1. getNumberOfMajors() method returned the negative value of numberOfMajors. It should be positive.
+2. getDepartmentChair() method return the String "this.departmentChair" instead of the member variable this.departmentChair.
+3. addPersonToMajor() has a improper name that did not reflect its function. I renamed it according to the route definition "addMajorToDept"
+4. dropPersonFromMajor() has a improper name that did not reflect its function. I renamed it according to the route definition "removeMajorFromDept". Also it was not checking whether numberOfMajors is greater than 0 before decreasing it.
+5. toString() method returned String "result.toString()" instead of the variable. It should be just result.toString().
+
+In RouteController.java:
+1. retrieveDepartment() method mismatched the information contained in ResponseEntity. When a department is found, we should return its string description instead of "Department Not Found", vice versa.
+2. retrieveCourse() method should have response code 200 instead of HttpStatus.FORBIDDEN when successfully retrived a course.
+3. getMajorCtFromDept() method should return a positive number of majors if found, not negative. (nor should it be double negated in both initialization and output. See Department.java bug 1).
+4. getMajorCtFromDept() should have response code HttpStatus.NOT_FOUND instead of HttpStatus.FORBIDDEN when cannot find the department.
+5. In findCourseInstructor(), the output can simply be " is the instructor for the course." instead of concatenation of two string " is the instructor for" + " the course."
+6. findCourseTime() should have response body of appropriate time if found, not "some time".
+7. addMajorToDept(): fixed the javadoc and Department object method to be the one that correctly reflects its purpose: add major to department not add person.
+8. removeMajorFromDept(): fixed the javadoc and Department object method to be the one that correctly reflects its purpose: remove major to department not add person.
+9. handleException() helper should have error response code like 500 (HttpStatus.INTERNAL_SERVER_ERROR) instead of 200 (HttpStatus.OK)
+
