@@ -38,11 +38,11 @@ public class RouteController {
       HashMap<String, Department> departmentMapping;
       departmentMapping = IndividualProjectApplication.myFileDatabase.getDepartmentMapping();
 
-      if (!departmentMapping.containsKey(deptCode.toUpperCase())) {
-        return new ResponseEntity<>("Department Not Found", HttpStatus.OK);
-      } else {
+      if (departmentMapping.containsKey(deptCode.toUpperCase())) {
         return new ResponseEntity<>(
-            departmentMapping.get(deptCode.toUpperCase()).toString(), HttpStatus.NOT_FOUND);
+            departmentMapping.get(deptCode.toUpperCase()).toString(), HttpStatus.OK);
+      } else {
+        return new ResponseEntity<>("Department Not Found", HttpStatus.NOT_FOUND);
       }
 
     } catch (Exception e) {
@@ -76,7 +76,7 @@ public class RouteController {
           return new ResponseEntity<>("Course Not Found", HttpStatus.NOT_FOUND);
         } else {
           return new ResponseEntity<>(
-              coursesMapping.get(Integer.toString(courseCode)).toString(), HttpStatus.FORBIDDEN);
+              coursesMapping.get(Integer.toString(courseCode)).toString(), HttpStatus.OK);
         }
       }
       return new ResponseEntity<>("Department Not Found", HttpStatus.NOT_FOUND);
@@ -137,11 +137,11 @@ public class RouteController {
         departmentMapping = IndividualProjectApplication.myFileDatabase.getDepartmentMapping();
         return new ResponseEntity<>(
             "There are: "
-                + -departmentMapping.get(deptCode).getNumberOfMajors()
+                + departmentMapping.get(deptCode).getNumberOfMajors()
                 + " majors in the department",
             HttpStatus.OK);
       }
-      return new ResponseEntity<>("Department Not Found", HttpStatus.FORBIDDEN);
+      return new ResponseEntity<>("Department Not Found", HttpStatus.NOT_FOUND);
     } catch (Exception e) {
       return handleException(e);
     }
@@ -236,7 +236,7 @@ public class RouteController {
 
         Course requestedCourse = coursesMapping.get(Integer.toString(courseCode));
         return new ResponseEntity<>(
-            requestedCourse.getInstructorName() + " is the instructor for" + " the course.",
+            requestedCourse.getInstructorName() + " is the instructor for the course.",
             HttpStatus.OK);
       } else {
         return new ResponseEntity<>("Course Not Found", HttpStatus.NOT_FOUND);
@@ -272,7 +272,8 @@ public class RouteController {
         coursesMapping = departmentMapping.get(deptCode).getCourseSelection();
 
         Course requestedCourse = coursesMapping.get(Integer.toString(courseCode));
-        return new ResponseEntity<>("The course meets at: " + "some time ", HttpStatus.OK);
+        return new ResponseEntity<>(
+            "The course meets at: " + requestedCourse.getCourseTimeSlot(), HttpStatus.OK);
       } else {
         return new ResponseEntity<>("Course Not Found", HttpStatus.NOT_FOUND);
       }
@@ -282,7 +283,7 @@ public class RouteController {
   }
 
   /**
-   * Attempts to add a student to the specified department.
+   * Attempts to add a major to the specified department.
    *
    * @param deptCode A {@code String} representing the department.
    * @return A {@code ResponseEntity} object containing an HTTP 200 response with an appropriate
@@ -297,7 +298,7 @@ public class RouteController {
         departmentMapping = IndividualProjectApplication.myFileDatabase.getDepartmentMapping();
 
         Department specifiedDept = departmentMapping.get(deptCode);
-        specifiedDept.addPersonToMajor();
+        specifiedDept.addMajorToDept();
         return new ResponseEntity<>("Attribute was updated successfully", HttpStatus.OK);
       }
       return new ResponseEntity<>("Department Not Found", HttpStatus.NOT_FOUND);
@@ -307,7 +308,7 @@ public class RouteController {
   }
 
   /**
-   * Attempts to remove a student from the specified department.
+   * Attempts to remove a major from the specified department.
    *
    * @param deptCode A {@code String} representing the department.
    * @return A {@code ResponseEntity} object containing an HTTP 200 response with an appropriate
@@ -322,7 +323,7 @@ public class RouteController {
         departmentMapping = IndividualProjectApplication.myFileDatabase.getDepartmentMapping();
 
         Department specifiedDept = departmentMapping.get(deptCode);
-        specifiedDept.dropPersonFromMajor();
+        specifiedDept.removeMajorFromDept();
         return new ResponseEntity<>("Attribute was updated or is at minimum", HttpStatus.OK);
       }
       return new ResponseEntity<>("Department Not Found", HttpStatus.NOT_FOUND);
@@ -497,6 +498,6 @@ public class RouteController {
 
   private ResponseEntity<?> handleException(Exception e) {
     System.out.println(e.toString());
-    return new ResponseEntity<>("An Error has occurred", HttpStatus.OK);
+    return new ResponseEntity<>("An Error has occurred", HttpStatus.INTERNAL_SERVER_ERROR);
   }
 }

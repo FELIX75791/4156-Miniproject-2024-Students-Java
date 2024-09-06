@@ -1,9 +1,8 @@
 package dev.coms4156.project.individualproject;
 
 import jakarta.annotation.PreDestroy;
-import java.util.HashMap;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
+import java.util.*;
+import org.springframework.boot.*;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
@@ -15,10 +14,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class IndividualProjectApplication implements CommandLineRunner {
 
-  // Database Instance
-  public static MyFileDatabase myFileDatabase;
-  private static boolean saveData = true;
-
   /**
    * The main launcher for the service all it does is make a call to the overridden run method.
    *
@@ -26,16 +21,6 @@ public class IndividualProjectApplication implements CommandLineRunner {
    */
   public static void main(String[] args) {
     SpringApplication.run(IndividualProjectApplication.class, args);
-  }
-
-  /**
-   * Overrides the database reference, used when testing.
-   *
-   * @param testData A {@code MyFileDatabase} object referencing test data.
-   */
-  public static void overrideDatabase(MyFileDatabase testData) {
-    myFileDatabase = testData;
-    saveData = false;
   }
 
   /**
@@ -56,6 +41,16 @@ public class IndividualProjectApplication implements CommandLineRunner {
     }
     myFileDatabase = new MyFileDatabase(0, "./data.txt");
     System.out.println("Start up");
+  }
+
+  /**
+   * Overrides the database reference, used when testing.
+   *
+   * @param testData A {@code MyFileDatabase} object referencing test data.
+   */
+  public static void overrideDatabase(MyFileDatabase testData) {
+    myFileDatabase = testData;
+    saveData = false;
   }
 
   /** Allows for data to be reset in event of errors. */
@@ -293,4 +288,8 @@ public class IndividualProjectApplication implements CommandLineRunner {
       myFileDatabase.saveContentsToFile();
     }
   }
+
+  // Database Instance
+  public static MyFileDatabase myFileDatabase;
+  private static boolean saveData = true;
 }
