@@ -1,8 +1,9 @@
 package dev.coms4156.project.individualproject;
 
 import jakarta.annotation.PreDestroy;
-import java.util.*;
-import org.springframework.boot.*;
+import java.util.HashMap;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
@@ -28,6 +29,16 @@ public class IndividualProjectApplication implements CommandLineRunner {
   }
 
   /**
+   * Overrides the database reference, used when testing.
+   *
+   * @param testData A {@code MyFileDatabase} object referencing test data.
+   */
+  public static void overrideDatabase(MyFileDatabase testData) {
+    myFileDatabase = testData;
+    saveData = false;
+  }
+
+  /**
    * This contains all the setup logic, it will mainly be focused on loading up and creating an
    * instance of the database based off a saved file or will create a fresh database if the file is
    * not present.
@@ -45,16 +56,6 @@ public class IndividualProjectApplication implements CommandLineRunner {
     }
     myFileDatabase = new MyFileDatabase(0, "./data.txt");
     System.out.println("Start up");
-  }
-
-  /**
-   * Overrides the database reference, used when testing.
-   *
-   * @param testData A {@code MyFileDatabase} object referencing test data.
-   */
-  public static void overrideDatabase(MyFileDatabase testData) {
-    myFileDatabase = testData;
-    saveData = false;
   }
 
   /** Allows for data to be reset in event of errors. */

@@ -1,7 +1,8 @@
 package dev.coms4156.project.individualproject;
 
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.HashMap;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,6 +14,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+/** Contains unit tests for each endpoint in RouteController. */
 @WebMvcTest(RouteController.class)
 public class RouteControllerTests {
 
@@ -23,6 +25,7 @@ public class RouteControllerTests {
   private HashMap<String, Department> mockDepartments;
   private HashMap<String, Course> mockCourses;
 
+  /** Set up the mock behavior of the static database in IndividualProjectApplication. */
   @BeforeEach
   public void setUp() {
     MockitoAnnotations.openMocks(this);
@@ -52,7 +55,9 @@ public class RouteControllerTests {
         .andExpect(
             content()
                 .string(
-                    "Welcome, in order to make an API call direct your browser or Postman to an endpoint \n\n This can be done using the following format: \n\n http:127.0.0.1:8080/endpoint?arg=value"));
+                    "Welcome, in order to make an API call direct your browser "
+                        + "or Postman to an endpoint \n\n This can be done using the following "
+                        + "format: \n\n http:127.0.0.1:8080/endpoint?arg=value"));
   }
 
   @Test

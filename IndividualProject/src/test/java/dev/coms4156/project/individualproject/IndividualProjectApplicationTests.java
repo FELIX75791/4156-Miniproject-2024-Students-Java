@@ -9,13 +9,16 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 
+/**
+ * Contains unit tests for IndividualProjectApplication.
+ */
 @SpringBootTest
 @ContextConfiguration
 public class IndividualProjectApplicationTests {
@@ -50,7 +53,7 @@ public class IndividualProjectApplicationTests {
   @Test
   public void testResetDataFile() {
     individualProjectApplication.resetDataFile();
-    HashMap<String, Department> mapping =
+    Map<String, Department> mapping =
         IndividualProjectApplication.myFileDatabase.getDepartmentMapping();
 
     assertEquals(7, mapping.size());

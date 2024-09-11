@@ -9,6 +9,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 
+/**
+ * Contains unit tests for Department.
+ */
 @SpringBootTest
 @ContextConfiguration
 public class DepartmentUnitTests {
@@ -33,21 +36,21 @@ public class DepartmentUnitTests {
     testDept = new Department("COMS", courses, "Luca Carloni", 2700);
   }
 
-  /** Test the getNumberOfMajors method */
+  /** Test the getNumberOfMajors method. */
   @Test
   public void testGetNumberOfMajors() {
     setUpDepartmentForTesting();
     assertEquals(2700, testDept.getNumberOfMajors());
   }
 
-  /** Test the getDepartmentChair method */
+  /** Test the getDepartmentChair method. */
   @Test
   public void testGetDepartmentChair() {
     setUpDepartmentForTesting();
     assertEquals("Luca Carloni", testDept.getDepartmentChair());
   }
 
-  /** Test adding a course to the department */
+  /** Test adding a course to the department. */
   @Test
   public void testAddCourse() {
     Course newCourse = new Course("John Kender", "102 Mudd", "1:10-2:25", 200);
@@ -55,16 +58,18 @@ public class DepartmentUnitTests {
     assertEquals(newCourse, testDept.getCourseSelection().get("4276"));
   }
 
-  /** Test creating and adding a new course */
+  /** Test creating and adding a new course. */
   @Test
   public void testCreateCourse() {
-    testDept.createCourse("4995", "Andrew Gelman", "305 Schermerhorn", "10:10-11:25", 100);
+    testDept.createCourse("4995", "Andrew Gelman", "305 Schermerhorn", "10:10-11:25", "100");
     Course createdCourse = testDept.getCourseSelection().get("4995");
     assertNotNull(createdCourse);
     assertEquals("Andrew Gelman", createdCourse.getInstructorName());
+    assertEquals("305 Schermerhorn", createdCourse.getCourseLocation());
+    assertEquals("10:10-11:25", createdCourse.getCourseTimeSlot());
   }
 
-  /** Test incrementing the number of majors */
+  /** Test incrementing the number of majors. */
   @Test
   public void testAddMajorToDept() {
     setUpDepartmentForTesting();
@@ -72,7 +77,7 @@ public class DepartmentUnitTests {
     assertEquals(2701, testDept.getNumberOfMajors());
   }
 
-  /** Test decrementing the number of majors */
+  /** Test decrementing the number of majors. */
   @Test
   public void testRemoveMajorFromDept() {
     setUpDepartmentForTesting();
@@ -83,7 +88,7 @@ public class DepartmentUnitTests {
     assertEquals(0, testDept.getNumberOfMajors());
   }
 
-  /** Test the toString method */
+  /** Test the toString method. */
   @Test
   public void testToString() {
     setUpDepartmentForTesting();

@@ -1,29 +1,48 @@
 package dev.coms4156.project.individualproject;
 
-import java.io.*;
+import java.io.Serial;
+import java.io.Serializable;
+import lombok.Getter;
+import lombok.Setter;
 
+/** Represents a course. */
 public class Course implements Serializable {
 
   @Serial private static final long serialVersionUID = 123456L;
-  private final int enrollmentCapacity;
-  private int enrolledStudentCount;
-  private String courseLocation;
-  private String instructorName;
-  private String courseTimeSlot;
+
+  /** The maximum number of students that can enroll in the course. */
+  private final int enrollCapacity;
 
   /**
-   * Constructs a new Course object with the given parameters. Initial count starts at 0.
+   * The current number of students enrolled in the course. -- SETTER -- Set the currently enrolled
+   * student count.
    *
-   * @param instructorName The name of the instructor teaching the course.
-   * @param courseLocation The location where the course is held.
+   * @param count Currently enrolled student count.
+   */
+  @Setter private int enrolledStudentCount;
+
+  /** The location where the course is held. */
+  @Getter private String courseLocation;
+
+  /** The name of the instructor teaching the course. */
+  @Getter private String instructorName;
+
+  /** The time slot when the course is conducted. */
+  @Getter private String courseTimeSlot;
+
+  /**
+   * Creates a Course with specified parameters. Enrollment starts at 0.
+   *
+   * @param instructorName The name of the course instructor.
+   * @param courseLocation The location of the course.
    * @param timeSlot The time slot of the course.
-   * @param capacity The maximum number of students that can enroll in the course.
+   * @param capacity The maximum number of students for the course.
    */
   public Course(String instructorName, String courseLocation, String timeSlot, int capacity) {
     this.courseLocation = courseLocation;
     this.instructorName = instructorName;
     this.courseTimeSlot = timeSlot;
-    this.enrollmentCapacity = capacity;
+    this.enrollCapacity = capacity;
     this.enrolledStudentCount = 0;
   }
 
@@ -33,11 +52,12 @@ public class Course implements Serializable {
    * @return true if the student is successfully enrolled, false otherwise.
    */
   public boolean enrollStudent() {
+    boolean result = false;
     if (!isCourseFull()) {
       enrolledStudentCount++;
-      return true;
+      result = true;
     }
-    return false;
+    return result;
   }
 
   /**
@@ -46,25 +66,15 @@ public class Course implements Serializable {
    * @return true if the student is successfully dropped, false otherwise.
    */
   public boolean dropStudent() {
+    boolean result = false;
     if (this.enrolledStudentCount > 0) {
       enrolledStudentCount--;
-      return true;
+      result = true;
     }
-    return false;
+    return result;
   }
 
-  public String getCourseLocation() {
-    return this.courseLocation;
-  }
-
-  public String getInstructorName() {
-    return this.instructorName;
-  }
-
-  public String getCourseTimeSlot() {
-    return this.courseTimeSlot;
-  }
-
+  @Override
   public String toString() {
     return "\nInstructor: "
         + instructorName
@@ -74,23 +84,39 @@ public class Course implements Serializable {
         + courseTimeSlot;
   }
 
+  /**
+   * Change the instructor of the course.
+   *
+   * @param newInstructorName The name of new instructor of the course.
+   */
   public void reassignInstructor(String newInstructorName) {
     this.instructorName = newInstructorName;
   }
 
+  /**
+   * Change the location of the course.
+   *
+   * @param newLocation The new location of the course.
+   */
   public void reassignLocation(String newLocation) {
     this.courseLocation = newLocation;
   }
 
+  /**
+   * Change the time of the course.
+   *
+   * @param newTime The new time slot of the course.
+   */
   public void reassignTime(String newTime) {
     this.courseTimeSlot = newTime;
   }
 
-  public void setEnrolledStudentCount(int count) {
-    this.enrolledStudentCount = count;
-  }
-
+  /**
+   * Determine if the course is full or not.
+   *
+   * @return True if the course is full, false otherwise.
+   */
   public boolean isCourseFull() {
-    return enrollmentCapacity <= enrolledStudentCount;
+    return enrollCapacity <= enrolledStudentCount;
   }
 }

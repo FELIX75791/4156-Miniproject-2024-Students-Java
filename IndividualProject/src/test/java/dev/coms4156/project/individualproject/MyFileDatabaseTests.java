@@ -1,24 +1,34 @@
 package dev.coms4156.project.individualproject;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
 
-import java.io.*;
-import java.util.HashMap;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
+/** Contains unit tests for MyFileDatabase. */
 public class MyFileDatabaseTests {
 
   private static final String FILE_PATH = "./testdata.txt";
   private MyFileDatabase database;
 
+  /** Clean up the test file before each test. */
   @BeforeEach
   public void setUp() {
     MockitoAnnotations.openMocks(this);
-    // Clean up the test file before each test
     File file = new File(FILE_PATH);
     if (file.exists()) {
       file.delete();
@@ -28,7 +38,7 @@ public class MyFileDatabaseTests {
   @Test
   public void testConstructorFlagZero() {
     // Mock a department mapping
-    HashMap<String, Department> mockMapping = new HashMap<>();
+    Map<String, Department> mockMapping = new HashMap<>();
     mockMapping.put("COMS", new Department("COMS", new HashMap<>(), "Chair", 0));
 
     // Serialize mockMapping to file
@@ -40,7 +50,7 @@ public class MyFileDatabaseTests {
 
     // Create database with flag 0
     database = new MyFileDatabase(0, FILE_PATH);
-    HashMap<String, Department> resultMapping = database.getDepartmentMapping();
+    Map<String, Department> resultMapping = database.getDepartmentMapping();
 
     assertNotNull(resultMapping);
     assertEquals(1, resultMapping.size());
@@ -58,8 +68,8 @@ public class MyFileDatabaseTests {
   public void testSetMapping() {
     database = new MyFileDatabase(1, FILE_PATH);
 
-    HashMap<String, Department> testMapping = new HashMap<>();
-    testMapping.put("EE", new Department("EE", new HashMap<>(), "Chair", 100));
+    Map<String, Department> testMapping = new HashMap<>();
+    testMapping.put("IEOR", new Department("IEOR", new HashMap<>(), "Jay Sethuraman", 67));
 
     database.setMapping(testMapping);
 
@@ -70,8 +80,8 @@ public class MyFileDatabaseTests {
   public void testSaveContentsToFile() throws IOException {
     database = new MyFileDatabase(1, FILE_PATH);
 
-    HashMap<String, Department> testMapping = new HashMap<>();
-    testMapping.put("ME", new Department("ME", new HashMap<>(), "Chair", 200));
+    Map<String, Department> testMapping = new HashMap<>();
+    testMapping.put("CHEM", new Department("CHEM", new HashMap<>(), "Laura J. Kaufman", 200));
 
     database.setMapping(testMapping);
     database.saveContentsToFile();
@@ -79,9 +89,9 @@ public class MyFileDatabaseTests {
     // Verify the file content
     try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(FILE_PATH))) {
       Object obj = in.readObject();
-      assertInstanceOf(HashMap.class, obj);
-      HashMap<String, Department> fileMapping = (HashMap<String, Department>) obj;
-      assertTrue(fileMapping.containsKey("ME"));
+      assertInstanceOf(Map.class, obj);
+      Map<String, Department> fileMapping = (Map<String, Department>) obj;
+      assertTrue(fileMapping.containsKey("CHEM"));
     } catch (ClassNotFoundException e) {
       fail("Class not found during deserialization.");
     }
@@ -91,12 +101,12 @@ public class MyFileDatabaseTests {
   public void testToString() {
     database = new MyFileDatabase(1, FILE_PATH);
 
-    HashMap<String, Department> testMapping = new HashMap<>();
+    Map<String, Department> testMapping = new HashMap<>();
     Department department = new Department("COMS", new HashMap<>(), "Luca Carloni", 2700);
     testMapping.put("COMS", department);
     database.setMapping(testMapping);
 
-    String expectedString = "For the COMS department: \n" + department.toString();
+    String expectedString = "For the COMS department: \n" + department;
     assertEquals(expectedString, database.toString());
   }
 }

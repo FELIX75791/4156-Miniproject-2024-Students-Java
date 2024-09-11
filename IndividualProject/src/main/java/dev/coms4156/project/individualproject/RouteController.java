@@ -1,6 +1,6 @@
 package dev.coms4156.project.individualproject;
 
-import java.util.HashMap;
+import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +12,24 @@ import org.springframework.web.bind.annotation.RestController;
 /** This class contains all the API routes for the system. */
 @RestController
 public class RouteController {
+
+  // No-argument constructor
+  public RouteController() {
+    // Default constructor
+  }
+
+  private static Map<String, Department> getDepartmentHashMap() {
+    Map<String, Department> departmentMapping;
+    departmentMapping = IndividualProjectApplication.myFileDatabase.getDepartmentMapping();
+    return departmentMapping;
+  }
+
+  private static Map<String, Course> getCourseHashMap(String deptCode) {
+    Map<String, Department> departmentMapping = getDepartmentHashMap();
+    Map<String, Course> coursesMapping;
+    coursesMapping = departmentMapping.get(deptCode).getCourseSelection();
+    return coursesMapping;
+  }
 
   /**
    * Redirects to the homepage.
@@ -35,7 +53,7 @@ public class RouteController {
   @GetMapping(value = "/retrieveDept", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<?> retrieveDepartment(@RequestParam(value = "deptCode") String deptCode) {
     try {
-      HashMap<String, Department> departmentMapping = getDepartmentHashMap();
+      Map<String, Department> departmentMapping = getDepartmentHashMap();
 
       if (departmentMapping.containsKey(deptCode.toUpperCase())) {
         return new ResponseEntity<>(
@@ -47,12 +65,6 @@ public class RouteController {
     } catch (Exception e) {
       return handleException(e);
     }
-  }
-
-  private static HashMap<String, Department> getDepartmentHashMap() {
-    HashMap<String, Department> departmentMapping;
-    departmentMapping = IndividualProjectApplication.myFileDatabase.getDepartmentMapping();
-    return departmentMapping;
   }
 
   /**
@@ -72,7 +84,7 @@ public class RouteController {
     try {
       boolean doesDepartmentExists = retrieveDepartment(deptCode).getStatusCode() == HttpStatus.OK;
       if (doesDepartmentExists) {
-        HashMap<String, Course> coursesMapping = getCourseHashMap(deptCode);
+        Map<String, Course> coursesMapping = getCourseHashMap(deptCode);
 
         if (!coursesMapping.containsKey(Integer.toString(courseCode))) {
           return new ResponseEntity<>("Course Not Found", HttpStatus.NOT_FOUND);
@@ -85,13 +97,6 @@ public class RouteController {
     } catch (Exception e) {
       return handleException(e);
     }
-  }
-
-  private static HashMap<String, Course> getCourseHashMap(String deptCode) {
-    HashMap<String, Department> departmentMapping = getDepartmentHashMap();
-    HashMap<String, Course> coursesMapping;
-    coursesMapping = departmentMapping.get(deptCode).getCourseSelection();
-    return coursesMapping;
   }
 
   /**
@@ -112,7 +117,7 @@ public class RouteController {
       doesCourseExists = retrieveCourse(deptCode, courseCode).getStatusCode() == HttpStatus.OK;
 
       if (doesCourseExists) {
-        HashMap<String, Course> coursesMapping = getCourseHashMap(deptCode);
+        Map<String, Course> coursesMapping = getCourseHashMap(deptCode);
 
         Course requestedCourse = coursesMapping.get(Integer.toString(courseCode));
         return new ResponseEntity<>(requestedCourse.isCourseFull(), HttpStatus.OK);
@@ -139,7 +144,7 @@ public class RouteController {
     try {
       boolean doesDepartmentExists = retrieveDepartment(deptCode).getStatusCode() == HttpStatus.OK;
       if (doesDepartmentExists) {
-        HashMap<String, Department> departmentMapping = getDepartmentHashMap();
+        Map<String, Department> departmentMapping = getDepartmentHashMap();
         return new ResponseEntity<>(
             "There are: "
                 + departmentMapping.get(deptCode).getNumberOfMajors()
@@ -166,7 +171,7 @@ public class RouteController {
     try {
       boolean doesDepartmentExists = retrieveDepartment(deptCode).getStatusCode() == HttpStatus.OK;
       if (doesDepartmentExists) {
-        HashMap<String, Department> departmentMapping = getDepartmentHashMap();
+        Map<String, Department> departmentMapping = getDepartmentHashMap();
         return new ResponseEntity<>(
             departmentMapping.get(deptCode).getDepartmentChair() + " is " + "the department chair.",
             HttpStatus.OK);
@@ -196,7 +201,7 @@ public class RouteController {
       doesCourseExists = retrieveCourse(deptCode, courseCode).getStatusCode() == HttpStatus.OK;
 
       if (doesCourseExists) {
-        HashMap<String, Course> coursesMapping = getCourseHashMap(deptCode);
+        Map<String, Course> coursesMapping = getCourseHashMap(deptCode);
 
         Course requestedCourse = coursesMapping.get(Integer.toString(courseCode));
         return new ResponseEntity<>(
@@ -230,7 +235,7 @@ public class RouteController {
       doesCourseExists = retrieveCourse(deptCode, courseCode).getStatusCode() == HttpStatus.OK;
 
       if (doesCourseExists) {
-        HashMap<String, Course> coursesMapping = getCourseHashMap(deptCode);
+        Map<String, Course> coursesMapping = getCourseHashMap(deptCode);
 
         Course requestedCourse = coursesMapping.get(Integer.toString(courseCode));
         return new ResponseEntity<>(
@@ -264,7 +269,7 @@ public class RouteController {
       doesCourseExists = retrieveCourse(deptCode, courseCode).getStatusCode() == HttpStatus.OK;
 
       if (doesCourseExists) {
-        HashMap<String, Course> coursesMapping = getCourseHashMap(deptCode);
+        Map<String, Course> coursesMapping = getCourseHashMap(deptCode);
 
         Course requestedCourse = coursesMapping.get(Integer.toString(courseCode));
         return new ResponseEntity<>(
@@ -289,7 +294,7 @@ public class RouteController {
     try {
       boolean doesDepartmentExists = retrieveDepartment(deptCode).getStatusCode() == HttpStatus.OK;
       if (doesDepartmentExists) {
-        HashMap<String, Department> departmentMapping = getDepartmentHashMap();
+        Map<String, Department> departmentMapping = getDepartmentHashMap();
 
         Department specifiedDept = departmentMapping.get(deptCode);
         specifiedDept.addMajorToDept();
@@ -313,7 +318,7 @@ public class RouteController {
     try {
       boolean doesDepartmentExists = retrieveDepartment(deptCode).getStatusCode() == HttpStatus.OK;
       if (doesDepartmentExists) {
-        HashMap<String, Department> departmentMapping = getDepartmentHashMap();
+        Map<String, Department> departmentMapping = getDepartmentHashMap();
 
         Department specifiedDept = departmentMapping.get(deptCode);
         specifiedDept.removeMajorFromDept();
@@ -342,7 +347,7 @@ public class RouteController {
       doesCourseExists = retrieveCourse(deptCode, courseCode).getStatusCode() == HttpStatus.OK;
 
       if (doesCourseExists) {
-        HashMap<String, Course> coursesMapping = getCourseHashMap(deptCode);
+        Map<String, Course> coursesMapping = getCourseHashMap(deptCode);
 
         Course requestedCourse = coursesMapping.get(Integer.toString(courseCode));
         boolean isStudentDropped = requestedCourse.dropStudent();
@@ -360,6 +365,17 @@ public class RouteController {
     }
   }
 
+  /**
+   * Endpoint for changing enrolled student count of a course. This method handles PATCH requests to
+   * change the time of a course identified by department code and course code.If the course exists,
+   * its EnrolledStudentCount is updated to the provided count.
+   *
+   * @param deptCode the code of the department containing the course.
+   * @param courseCode the code of the course to change the enrollment count for
+   * @param count new enrollment count
+   * @return a ResponseEntity with a success message if the operation is successful, or an error
+   *     message if the course is not found
+   */
   @PatchMapping(value = "/setEnrollmentCount", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<?> setEnrollmentCount(
       @RequestParam(value = "deptCode") String deptCode,
@@ -370,7 +386,7 @@ public class RouteController {
       doesCourseExists = retrieveCourse(deptCode, courseCode).getStatusCode() == HttpStatus.OK;
 
       if (doesCourseExists) {
-        HashMap<String, Course> coursesMapping = getCourseHashMap(deptCode);
+        Map<String, Course> coursesMapping = getCourseHashMap(deptCode);
 
         Course requestedCourse = coursesMapping.get(Integer.toString(courseCode));
         requestedCourse.setEnrolledStudentCount(count);
@@ -404,7 +420,7 @@ public class RouteController {
       doesCourseExists = retrieveCourse(deptCode, courseCode).getStatusCode() == HttpStatus.OK;
 
       if (doesCourseExists) {
-        HashMap<String, Course> coursesMapping = getCourseHashMap(deptCode);
+        Map<String, Course> coursesMapping = getCourseHashMap(deptCode);
 
         Course requestedCourse = coursesMapping.get(Integer.toString(courseCode));
         requestedCourse.reassignTime(time);
@@ -438,7 +454,7 @@ public class RouteController {
       doesCourseExists = retrieveCourse(deptCode, courseCode).getStatusCode() == HttpStatus.OK;
 
       if (doesCourseExists) {
-        HashMap<String, Course> coursesMapping = getCourseHashMap(deptCode);
+        Map<String, Course> coursesMapping = getCourseHashMap(deptCode);
 
         Course requestedCourse = coursesMapping.get(Integer.toString(courseCode));
         requestedCourse.reassignInstructor(teacher);
@@ -451,6 +467,17 @@ public class RouteController {
     }
   }
 
+  /**
+   * Endpoint for changing the location of a course. This method handles PATCH requests to change
+   * the location of a course identified by department code and course code. If the course exists,
+   * its location is updated to the provided location.
+   *
+   * @param deptCode the code of the department containing the course
+   * @param courseCode the code of the course to change the location for
+   * @param location the new location for the course
+   * @return a ResponseEntity with a success message if the operation is successful, or an error
+   *     message if the course is not found
+   */
   @PatchMapping(value = "/changeCourseLocation", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<?> changeCourseLocation(
       @RequestParam(value = "deptCode") String deptCode,
@@ -461,7 +488,7 @@ public class RouteController {
       doesCourseExists = retrieveCourse(deptCode, courseCode).getStatusCode() == HttpStatus.OK;
 
       if (doesCourseExists) {
-        HashMap<String, Course> coursesMapping = getCourseHashMap(deptCode);
+        Map<String, Course> coursesMapping = getCourseHashMap(deptCode);
 
         Course requestedCourse = coursesMapping.get(Integer.toString(courseCode));
         requestedCourse.reassignLocation(location);
