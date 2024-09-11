@@ -1,5 +1,6 @@
 Overall:
-Follow the loose coupling and programming to interfaces, switched occurrences of HashMap type in declaration to Map.
+1. Follow the loose coupling and programming to interfaces, switched occurrences of HashMap type in declaration to Map.
+2. Use Lombok default @Getter and @Setter to simplify some default getter and setter method. Now dependencies also require Lombok.
 
 
 In Course.java:
@@ -29,8 +30,4 @@ In RouteController.java:
 9. handleException() helper should have error response code like 500 (HttpStatus.INTERNAL_SERVER_ERROR) instead of 200 (HttpStatus.OK)
 10. refactored the logic to retrieve Department mapping as private helper getDepartmentHashMap(), also refactored the logic to retrieve Course mapping as private helper getCourseHashMap()
 
-In MyFileDatabase.java:
-1. According to PMD I should avoid instantiating FileInputStream, FileOutputStream. So I used the Files API instead of instantiate it.
-2. Use @Slf4j to log the activity, instead of printing to system.out.
-3. Use Lombok default @Getter to simplify code.
 
