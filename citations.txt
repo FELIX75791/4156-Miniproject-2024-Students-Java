@@ -1,1 +1,4 @@
-To best of my knowledge, I have no citation to report. I used some general google search to help me, together with the documentation of Java packages.
+1. I used "mvn pmd:check" to run static checker.
+2. I used "mvn checkstyle:check" to check the code style.
+3. I used "mvn jacoco:report" to generate the coverage report.
+

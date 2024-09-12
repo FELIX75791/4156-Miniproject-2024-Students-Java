@@ -1,8 +1,3 @@
-Overall:
-1. Follow the loose coupling and programming to interfaces, switched occurrences of HashMap type in declaration to Map.
-2. Use Lombok default @Getter and @Setter to simplify some default getter and setter method. Now dependencies also require Lombok.
-
-
 In Course.java:
 1. enrolledStudentCount was initialized with wrong non-zero value. Initial value should be 0.
 2. enrollStudent() method was implemented incorrectly. It was not checking whether the course is full or not and directly increase the enrolledStudentCount with a always false return value.
@@ -14,9 +9,8 @@ In Course.java:
 In Department.java:
 1. getNumberOfMajors() method returned the negative value of numberOfMajors. It should be positive.
 2. getDepartmentChair() method return the String "this.departmentChair" instead of the member variable this.departmentChair.
-3. addPersonToMajor() has a improper name that did not reflect its function. I renamed it according to the route definition "addMajorToDept"
-4. dropPersonFromMajor() has a improper name that did not reflect its function. I renamed it according to the route definition "removeMajorFromDept". Also it was not checking whether numberOfMajors is greater than 0 before decreasing it.
-5. toString() method returned String "result.toString()" instead of the variable. It should be just result.toString().
+3. dropPersonFromMajor()  was not checking whether numberOfMajors is greater than 0 before decreasing it.
+4. toString() method returned String "result.toString()" instead of the variable. It should be just result.toString().
 
 In RouteController.java:
 1. retrieveDepartment() method mismatched the information contained in ResponseEntity. When a department is found, we should return its string description instead of "Department Not Found", vice versa.
