@@ -61,7 +61,7 @@ public class DepartmentUnitTests {
   /** Test creating and adding a new course. */
   @Test
   public void testCreateCourse() {
-    testDept.createCourse("4995", "Andrew Gelman", "305 Schermerhorn", "10:10-11:25", "100");
+    testDept.createCourse("4995", "Andrew Gelman", "305 Schermerhorn", "10:10-11:25", 100);
     Course createdCourse = testDept.getCourseSelection().get("4995");
     assertNotNull(createdCourse);
     assertEquals("Andrew Gelman", createdCourse.getInstructorName());
@@ -71,17 +71,17 @@ public class DepartmentUnitTests {
 
   /** Test incrementing the number of majors. */
   @Test
-  public void testAddMajorToDept() {
+  public void testAddPersonToMajor() {
     setUpDepartmentForTesting();
-    testDept.addMajorToDept();
+    testDept.addPersonToMajor();
     assertEquals(2701, testDept.getNumberOfMajors());
   }
 
   /** Test decrementing the number of majors. */
   @Test
-  public void testRemoveMajorFromDept() {
+  public void testDropPersonFromMajor() {
     setUpDepartmentForTesting();
-    testDept.removeMajorFromDept();
+    testDept.dropPersonFromMajor();
     assertEquals(2699, testDept.getNumberOfMajors());
     HashMap<String, Course> courses = new HashMap<>();
     testDept = new Department("COMS", courses, "Luca Carloni", 0);

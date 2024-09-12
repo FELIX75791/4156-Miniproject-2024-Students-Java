@@ -5,8 +5,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.HashMap;
 import java.util.Map;
-import lombok.Getter;
 
 /** This class represents a file-based database containing department mappings. */
 public class MyFileDatabase {
@@ -14,13 +14,8 @@ public class MyFileDatabase {
   /** The path to the file containing the database entries. */
   private final String filePath;
 
-  /**
-   * The mapping of department names to Department objects. -- GETTER -- Gets the department mapping
-   * of the database.
-   *
-   * @return the department mapping
-   */
-  @Getter private Map<String, Department> departmentMapping;
+  /** The mapping of department names to Department objects. */
+  private HashMap<String, Department> departmentMapping;
 
   /**
    * Constructs a MyFileDatabase object and loads up the data structure with the contents of the
@@ -41,7 +36,7 @@ public class MyFileDatabase {
    *
    * @param mapping the mapping of department names to Department objects
    */
-  public void setMapping(Map<String, Department> mapping) {
+  public void setMapping(HashMap<String, Department> mapping) {
     this.departmentMapping = mapping;
   }
 
@@ -50,11 +45,11 @@ public class MyFileDatabase {
    *
    * @return the deserialized department mapping
    */
-  public Map<String, Department> deSerializeObjectFromFile() {
+  public HashMap<String, Department> deSerializeObjectFromFile() {
     try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filePath))) {
       Object obj = in.readObject();
       if (obj instanceof Map) {
-        return (Map<String, Department>) obj;
+        return (HashMap<String, Department>) obj;
       } else {
         throw new IllegalArgumentException("Invalid object type in file.");
       }
@@ -75,6 +70,15 @@ public class MyFileDatabase {
     } catch (IOException e) {
       e.printStackTrace();
     }
+  }
+
+  /**
+   * Gets the department mapping of the database.
+   *
+   * @return the department mapping
+   */
+  public HashMap<String, Department> getDepartmentMapping() {
+    return this.departmentMapping;
   }
 
   /**

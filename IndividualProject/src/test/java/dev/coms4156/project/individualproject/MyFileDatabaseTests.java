@@ -68,7 +68,7 @@ public class MyFileDatabaseTests {
   public void testSetMapping() {
     database = new MyFileDatabase(1, FILE_PATH);
 
-    Map<String, Department> testMapping = new HashMap<>();
+    HashMap<String, Department> testMapping = new HashMap<>();
     testMapping.put("IEOR", new Department("IEOR", new HashMap<>(), "Jay Sethuraman", 67));
 
     database.setMapping(testMapping);
@@ -80,7 +80,7 @@ public class MyFileDatabaseTests {
   public void testSaveContentsToFile() throws IOException {
     database = new MyFileDatabase(1, FILE_PATH);
 
-    Map<String, Department> testMapping = new HashMap<>();
+    HashMap<String, Department> testMapping = new HashMap<>();
     testMapping.put("CHEM", new Department("CHEM", new HashMap<>(), "Laura J. Kaufman", 200));
 
     database.setMapping(testMapping);
@@ -90,7 +90,7 @@ public class MyFileDatabaseTests {
     try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(FILE_PATH))) {
       Object obj = in.readObject();
       assertInstanceOf(Map.class, obj);
-      Map<String, Department> fileMapping = (Map<String, Department>) obj;
+      HashMap<String, Department> fileMapping = (HashMap<String, Department>) obj;
       assertTrue(fileMapping.containsKey("CHEM"));
     } catch (ClassNotFoundException e) {
       fail("Class not found during deserialization.");
@@ -101,7 +101,7 @@ public class MyFileDatabaseTests {
   public void testToString() {
     database = new MyFileDatabase(1, FILE_PATH);
 
-    Map<String, Department> testMapping = new HashMap<>();
+    HashMap<String, Department> testMapping = new HashMap<>();
     Department department = new Department("COMS", new HashMap<>(), "Luca Carloni", 2700);
     testMapping.put("COMS", department);
     database.setMapping(testMapping);

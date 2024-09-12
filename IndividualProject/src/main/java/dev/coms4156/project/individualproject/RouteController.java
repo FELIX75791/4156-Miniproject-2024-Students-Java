@@ -1,5 +1,6 @@
 package dev.coms4156.project.individualproject;
 
+import java.util.HashMap;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,15 +19,15 @@ public class RouteController {
     // Default constructor
   }
 
-  private static Map<String, Department> getDepartmentHashMap() {
-    Map<String, Department> departmentMapping;
+  private static HashMap<String, Department> getDepartmentHashMap() {
+    HashMap<String, Department> departmentMapping;
     departmentMapping = IndividualProjectApplication.myFileDatabase.getDepartmentMapping();
     return departmentMapping;
   }
 
-  private static Map<String, Course> getCourseHashMap(String deptCode) {
-    Map<String, Department> departmentMapping = getDepartmentHashMap();
-    Map<String, Course> coursesMapping;
+  private static HashMap<String, Course> getCourseHashMap(String deptCode) {
+    HashMap<String, Department> departmentMapping = getDepartmentHashMap();
+    HashMap<String, Course> coursesMapping;
     coursesMapping = departmentMapping.get(deptCode).getCourseSelection();
     return coursesMapping;
   }
@@ -297,7 +298,7 @@ public class RouteController {
         Map<String, Department> departmentMapping = getDepartmentHashMap();
 
         Department specifiedDept = departmentMapping.get(deptCode);
-        specifiedDept.addMajorToDept();
+        specifiedDept.addPersonToMajor();
         return new ResponseEntity<>("Attribute was updated successfully", HttpStatus.OK);
       }
       return new ResponseEntity<>("Department Not Found", HttpStatus.NOT_FOUND);
@@ -321,7 +322,7 @@ public class RouteController {
         Map<String, Department> departmentMapping = getDepartmentHashMap();
 
         Department specifiedDept = departmentMapping.get(deptCode);
-        specifiedDept.removeMajorFromDept();
+        specifiedDept.dropPersonFromMajor();
         return new ResponseEntity<>("Attribute was updated or is at minimum", HttpStatus.OK);
       }
       return new ResponseEntity<>("Department Not Found", HttpStatus.NOT_FOUND);
