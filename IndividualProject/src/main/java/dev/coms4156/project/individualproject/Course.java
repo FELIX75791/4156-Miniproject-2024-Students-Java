@@ -2,8 +2,6 @@ package dev.coms4156.project.individualproject;
 
 import java.io.Serial;
 import java.io.Serializable;
-import lombok.Getter;
-import lombok.Setter;
 
 /** Represents a course. */
 public class Course implements Serializable {
@@ -13,22 +11,17 @@ public class Course implements Serializable {
   /** The maximum number of students that can enroll in the course. */
   private final int enrollCapacity;
 
-  /**
-   * The current number of students enrolled in the course. -- SETTER -- Set the currently enrolled
-   * student count.
-   *
-   * @param count Currently enrolled student count.
-   */
-  @Setter private int enrolledStudentCount;
+  /** The current number of students enrolled in the course. */
+  private int enrolledStudentCount;
 
   /** The location where the course is held. */
-  @Getter private String courseLocation;
+  private String courseLocation;
 
   /** The name of the instructor teaching the course. */
-  @Getter private String instructorName;
+  private String instructorName;
 
   /** The time slot when the course is conducted. */
-  @Getter private String courseTimeSlot;
+  private String courseTimeSlot;
 
   /**
    * Creates a Course with specified parameters. Enrollment starts at 0.
@@ -74,6 +67,18 @@ public class Course implements Serializable {
     return result;
   }
 
+  public String getCourseLocation() {
+    return this.courseLocation;
+  }
+
+  public String getInstructorName() {
+    return this.instructorName;
+  }
+
+  public String getCourseTimeSlot() {
+    return this.courseTimeSlot;
+  }
+
   @Override
   public String toString() {
     return "\nInstructor: "
@@ -109,6 +114,10 @@ public class Course implements Serializable {
    */
   public void reassignTime(String newTime) {
     this.courseTimeSlot = newTime;
+  }
+
+  public void setEnrolledStudentCount(int count) {
+    this.enrolledStudentCount = count;
   }
 
   /**
