@@ -1,3 +1,3 @@
-# Welcome Students of 4156
+# Student Repository of COMS 4156 Projects
 
-Please follow the assignment specifications on Courseworks when completing this project.
+Ziyue Jin (zj2393)
