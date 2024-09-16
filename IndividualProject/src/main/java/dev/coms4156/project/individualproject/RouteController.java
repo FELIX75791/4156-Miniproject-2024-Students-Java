@@ -2,6 +2,7 @@ package dev.coms4156.project.individualproject;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -95,6 +96,41 @@ public class RouteController {
         }
       }
       return new ResponseEntity<>("Department Not Found", HttpStatus.NOT_FOUND);
+    } catch (Exception e) {
+      return handleException(e);
+    }
+  }
+
+  /**
+   * Displays the details of the requested courses that have course code matches to request input.
+   * or displays the proper error message in response to the request.
+   *
+   * @param courseCode A {@code int} representing the course(s) the user wishes to retrieve.
+   * @return A {@code ResponseEntity} object containing either the details of the courses and an
+   *     HTTP 200 response or, an appropriate message indicating the proper response.
+   */
+  @GetMapping(value = "/retrieveCourses", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<?> retrieveCourse(@RequestParam(value = "courseCode") int courseCode) {
+    StringBuilder result = new StringBuilder();
+    try {
+      Map<String, Department> departmentMapping = getDepartmentHashMap();
+      for (Entry<String, Department> entry : departmentMapping.entrySet()) {
+        Map<String, Course> coursesMapping = entry.getValue().getCourseSelection();
+        if (coursesMapping.containsKey(Integer.toString(courseCode))) {
+          result
+              .append(entry.getKey())
+              .append(' ')
+              .append(courseCode)
+              .append(':')
+              .append(coursesMapping.get(Integer.toString(courseCode)).toString())
+              .append('\n');
+        }
+      }
+      if (!result.isEmpty()) {
+        return new ResponseEntity<>(result.toString(), HttpStatus.OK);
+      } else {
+        return new ResponseEntity<>("No course match the given course code.", HttpStatus.NOT_FOUND);
+      }
     } catch (Exception e) {
       return handleException(e);
     }
